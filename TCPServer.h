@@ -8,6 +8,7 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+using SOCKET = unsigned int;
 #endif
 
 class TCPServer

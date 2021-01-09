@@ -4,7 +4,7 @@ TCPServer::TCPServer(int port)
 {
 #ifdef _WIN32
     WSADATA wsaData;
-    WSAStartup(MAKEWORD(2, 0), &wsaData);
+    int ret = WSAStartup(MAKEWORD(2, 0), &wsaData);
 #endif // _WIN32
 
     ADDR server;
@@ -12,13 +12,16 @@ TCPServer::TCPServer(int port)
     server.sin_family = AF_INET;
     server.sin_port = htons(port);
     server.sin_addr.s_addr = INADDR_ANY;
-    bind(mServerSock, (struct sockaddr*)&server, sizeof(server));
+    if (bind(mServerSock, (struct sockaddr*)&server, sizeof(server)) == -1)
+        throw "bind error";
+
     listen(mServerSock, 5);
 }
 
 TCPServer::~TCPServer()
 {
 #ifdef _WIN32
+    close(mServerSock);
     WSACleanup();
 #endif
 }
@@ -32,6 +35,8 @@ std::pair<SOCKET, TCPServer::ADDR> TCPServer::Accept()
 #else
     SOCKET sock = accept(mServerSock, (struct sockaddr*)&client, (socklen_t*)&nlen);
 #endif
+    if (sock == -1)
+        throw "accept error";
     return std::make_pair(sock, client);
 }
 

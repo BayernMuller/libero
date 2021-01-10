@@ -1,4 +1,5 @@
 #include "TCPServer.h"
+#include <exception>
 
 TCPServer::TCPServer(int port)
 {
@@ -13,7 +14,7 @@ TCPServer::TCPServer(int port)
     server.sin_port = htons(port);
     server.sin_addr.s_addr = INADDR_ANY;
     if (bind(mServerSock, (struct sockaddr*)&server, sizeof(server)) == -1)
-        throw "bind error";
+        throw std::runtime_error("bind error");
 
     listen(mServerSock, 5);
 }
@@ -36,7 +37,7 @@ std::pair<SOCKET, TCPServer::ADDR> TCPServer::Accept()
     SOCKET sock = accept(mServerSock, (struct sockaddr*)&client, (socklen_t*)&nlen);
 #endif
     if (sock == -1)
-        throw "accept error";
+        throw std::runtime_error("accept error");
     return std::make_pair(sock, client);
 }
 

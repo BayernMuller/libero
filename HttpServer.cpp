@@ -29,22 +29,19 @@ void HttpServer::onRequest(HttpServer* server, SOCKET socket, ADDR addr)
 	iss >> method;
 	iss >> url;
 	
-	int code = 404;
-	std::string result = "404 Not Found";
+	auto result = std::make_pair(404, std::string("404 Not Found"));
 	auto iter = server->mHanlders.find(url);
 	if (iter != server->mHanlders.end())
 	{
-		code = 200;
 		result = iter->second(std::move(method), std::move(url));
 	}
 
 	std::ostringstream oss;
-	oss << "HTTP/1.1 " << code << " OK\r\n";
+	oss << "HTTP/1.1 " << result.first << " OK\r\n";
 	oss << "Cache-Control: no-cache, private\r\n";
 	oss << "Content-Type: text/html\r\n";
-	oss << "Content-Length: " << result.size() << "\r\n";
-	oss << "\r\n";
-	oss << result;
+	oss << "Content-Length: " << result.second.size() << "\r\n";
+	oss << result.second;
 
 	send(socket, oss.str().c_str(), oss.str().size(), 0);
 	close(socket);

@@ -4,9 +4,11 @@
 #include <functional>
 #include <map>
 
+using response = std::pair<int, std::string>;
+
 class HttpServer : public TCPServer
 {
-	using handler = std::string(*)(std::string, std::string);
+	using handler = response(*)(std::string, std::string);
 public:
 	using TCPServer::TCPServer;
 	void Run();

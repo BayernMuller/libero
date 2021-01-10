@@ -15,14 +15,15 @@ using SOCKET = unsigned int;
 
 class TCPServer
 {
-	using ADDR = ::sockaddr_in;
 public:
+	using ADDR = ::sockaddr_in;
+
 	TCPServer(const char* ip, int port);
 	virtual ~TCPServer();
-	std::pair<SOCKET, ADDR> Accept();
+	virtual std::pair<SOCKET, ADDR> Accept();
 	
 protected:
-	void close(SOCKET sock);
+	static void close(SOCKET sock);
 
 private:
 	SOCKET mServerSock;

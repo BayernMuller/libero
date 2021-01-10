@@ -5,7 +5,12 @@ TCPServer::TCPServer(int port)
 {
 #ifdef _WIN32
     WSADATA wsaData;
-    int ret = WSAStartup(MAKEWORD(2, 0), &wsaData);
+    if (WSAStartup(MAKEWORD(2, 0), &wsaData))
+    {
+        char buf[100];
+        strerror_s(buf, WSAGetLastError());
+        throw std::runtime_error(buf);
+    }
 #endif // _WIN32
 
     ADDR server;
@@ -16,7 +21,8 @@ TCPServer::TCPServer(int port)
     if (bind(mServerSock, (struct sockaddr*)&server, sizeof(server)) == -1)
         throw std::runtime_error("bind error");
 
-    listen(mServerSock, 5);
+    if (listen(mServerSock, 5) == -1)
+        throw std::runtime_error("listen error");
 }
 
 TCPServer::~TCPServer()
@@ -24,7 +30,7 @@ TCPServer::~TCPServer()
 #ifdef _WIN32
     close(mServerSock);
     WSACleanup();
-#endif
+#endif // _WIN32
 }
 
 std::pair<SOCKET, TCPServer::ADDR> TCPServer::Accept()

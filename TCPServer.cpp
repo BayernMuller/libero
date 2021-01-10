@@ -1,7 +1,8 @@
 #include "TCPServer.h"
 #include <exception>
 
-TCPServer::TCPServer(int port)
+TCPServer::TCPServer(const char* ip, int port)
+    : mIPAdress(ip), mPort(port)
 {
 #ifdef _WIN32
     WSADATA wsaData;
@@ -17,7 +18,8 @@ TCPServer::TCPServer(int port)
     mServerSock = socket(AF_INET, SOCK_STREAM, 0);
     server.sin_family = AF_INET;
     server.sin_port = htons(port);
-    server.sin_addr.s_addr = INADDR_ANY;
+    inet_pton(AF_INET, mIPAdress.c_str(), &server.sin_addr);
+
     if (bind(mServerSock, (struct sockaddr*)&server, sizeof(server)) == -1)
         throw std::runtime_error("bind error");
 

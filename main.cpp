@@ -4,7 +4,7 @@ using namespace std;
 
 int main() try
 {
-	TCPServer server(8000);
+	TCPServer server("0.0.0.0", 8000);
 	auto info = server.Accept();
 	cout << "connected" << endl;
 	char buf[1024] = {0};

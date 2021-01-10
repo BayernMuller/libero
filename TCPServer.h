@@ -1,9 +1,10 @@
 #ifndef __TCPSERVER_H__
 #define __TCPSERVER_H__
 #include <iostream>
+#include <string>
 
 #ifdef _WIN32
-#include <winsock2.h>
+#include <WS2tcpip.h>
 #pragma comment (lib, "ws2_32.lib")
 #else
 #include <sys/socket.h>
@@ -16,7 +17,7 @@ class TCPServer
 {
 	using ADDR = ::sockaddr_in;
 public:
-	TCPServer(int port);
+	TCPServer(const char* ip, int port);
 	virtual ~TCPServer();
 	std::pair<SOCKET, ADDR> Accept();
 	
@@ -25,6 +26,8 @@ protected:
 
 private:
 	SOCKET mServerSock;
+	std::string mIPAdress;
+	int mPort;
 };
 
 #endif

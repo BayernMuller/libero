@@ -14,7 +14,7 @@ public:
 
 private:
 	std::pair<SOCKET, ADDR> Accept() override;
-	static void onRequest(SOCKET socket, ADDR addr);
+	static void onRequest(HttpServer* server, SOCKET socket, ADDR addr);
 
 private:
 	std::map<std::string, handler> mHanlders;

@@ -1,25 +1,26 @@
 #include <iostream>
-#include <ctime>
 #include "HttpServer.h"
 using namespace std;
 
-response index(string method, string data)
+response index(request req)
 {
-	char str[128] = {0,};
-	auto now = time(nullptr);
-	ctime_s(str, 128, &now);
-	return { 200, str };
+	if (req.method == "POST")
+	{
+		cout << req.header["Content-Type"] << endl;
+		return { 200, req.content };
+	}
+	return { 400, "Not allowed method" };
 }
 
-response name(string method, string data)
+response me(request req)
 {
-	return { 200, "<h1>BayernMuller</h1>" };
+	return { 200, "<h1>BayernMuller</h1><p><h4>Embedded Software Developer</h4></p>" };
 }
 
 int main()
 {
 	HttpServer server("0.0.0.0", 8000);
 	server.Route("/", index);
-	server.Route("/name", name);
+	server.Route("/me", me);
 	server.Run();
 }

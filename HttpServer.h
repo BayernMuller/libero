@@ -5,10 +5,17 @@
 #include <map>
 
 using response = std::pair<int, std::string>;
+struct request
+{
+	std::string method;
+	std::string url;
+	std::string content;
+	std::map<std::string, std::string> header;
+};
 
 class HttpServer : public TCPServer
 {
-	using handler = response(*)(std::string, std::string);
+	using handler = response(*)(request);
 public:
 	using TCPServer::TCPServer;
 	void Run();
@@ -17,6 +24,7 @@ public:
 private:
 	std::pair<SOCKET, ADDR> Accept() override;
 	static void onRequest(HttpServer* server, SOCKET socket, ADDR addr);
+	static request parseRequest(char* req);
 
 private:
 	std::map<std::string, handler> mHanlders;

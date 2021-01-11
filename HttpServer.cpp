@@ -3,6 +3,7 @@
 #include <sstream>
 #include <vector>
 #include <iterator>
+#include <cstring>
 
 void HttpServer::Run()
 {
@@ -19,17 +20,18 @@ void HttpServer::onRequest(HttpServer* server, SOCKET socket, ADDR addr)
 {
 	char buf[2049] = { 0, };
 	recv(socket, buf, 2048, 0);
+	std::cout << buf << std::endl;
 
-	std::istringstream iss(buf);
-	std::string method, url;
-	iss >> method;
-	iss >> url;
-	
-	auto result = std::make_pair(404, std::string("404 Not Found"));
-	auto iter = server->mHanlders.find(url);
+	request req = parseRequest(buf);
+	inet_ntop(addr.sin_family, &addr.sin_addr, buf, 128);
+	std::cout << buf << ":" << addr.sin_port << " - ";
+	std::cout << req.method << " " << req.url << " ";
+
+	response result{ 404, "404 Not Found" };
+	auto iter = server->mHanlders.find(req.url);
 	if (iter != server->mHanlders.end())
 	{
-		result = iter->second(method, url);
+		result = iter->second(std::move(req));
 	}
 
 	std::ostringstream oss;
@@ -42,11 +44,31 @@ void HttpServer::onRequest(HttpServer* server, SOCKET socket, ADDR addr)
 	std::string rsp(std::move(oss.str()));
 	send(socket, rsp.c_str(), rsp.size(), 0);
 
-	inet_ntop(addr.sin_family, &addr.sin_addr, buf, 128);
-	std::cout << buf << ":" << addr.sin_port << " - ";
-	std::cout << method << " " << url << " " << result.first << std::endl;
-
+	std::cout << result.first << std::endl;
 	close(socket);
+}
+
+request HttpServer::parseRequest(char* req)
+{
+	char* content = strstr(req, "\r\n\r\n");
+	if (content)
+	{
+		content[0] = '\0';
+		content += 4;
+	}
+	std::istringstream iss(req);
+	std::string method, url, protocol, key;
+	std::map<std::string, std::string> header;
+	iss >> method >> url >> protocol;
+	while (iss >> key)
+	{
+		char buf[128] = { 0, };
+		key.pop_back();
+		iss.getline(buf, sizeof(buf));
+		buf[strlen(buf) - 1] = 0;
+		header[key] = buf + 1;
+	}
+	return {std::move(method), std::move(url), content ? content : "", std::move(header)};
 }
 
 void HttpServer::Route(const char* url, handler fp)

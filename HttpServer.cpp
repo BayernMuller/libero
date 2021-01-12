@@ -11,8 +11,8 @@ void HttpServer::Run()
 	while (true)
 	{
 		auto client = Accept();
-		std::thread parser(onRequest, this, client.first, client.second);
-		parser.detach();
+		std::thread handling(onRequest, this, client.first, client.second);
+		handling.detach();
 	}
 }
 
@@ -20,7 +20,6 @@ void HttpServer::onRequest(HttpServer* server, SOCKET socket, ADDR addr)
 {
 	char buf[2049] = { 0, };
 	recv(socket, buf, 2048, 0);
-	std::cout << buf << std::endl;
 
 	std::string reqlog;
 	reqlog.reserve(22);
@@ -80,6 +79,10 @@ std::string HttpServer::createResponse(const response& res)
 
 void HttpServer::Route(const char* url, handler fp)
 {
+	if (mHanlders.find(url) != mHanlders.end())
+	{
+		throw std::runtime_error("handler already exists");
+	}
 	mHanlders[url] = fp;
 }
 

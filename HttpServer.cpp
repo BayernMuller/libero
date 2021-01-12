@@ -22,10 +22,11 @@ void HttpServer::onRequest(HttpServer* server, SOCKET socket, ADDR addr)
 	recv(socket, buf, 2048, 0);
 	std::cout << buf << std::endl;
 
+	std::string reqlog;
+	reqlog.reserve(22);
+
 	request req = parseRequest(buf);
-	inet_ntop(addr.sin_family, &addr.sin_addr, buf, 128);
-	std::cout << buf << ":" << addr.sin_port << " - ";
-	std::cout << req.method << " " << req.url << " ";
+	reqlog = req.method + " " + req.url + " ";
 
 	response result{ 404, "404 Not Found" };
 	auto iter = server->mHanlders.find(req.url);
@@ -33,18 +34,13 @@ void HttpServer::onRequest(HttpServer* server, SOCKET socket, ADDR addr)
 	{
 		result = iter->second(std::move(req));
 	}
-
-	std::ostringstream oss;
-	oss << "HTTP/1.1 " << result.first << " OK\r\n";
-	oss << "Cache-Control: no-cache, private\r\n";
-	oss << "Content-Type: text/html\r\n";
-	oss << "Content-Length: " << result.second.size() << "\r\n";
-	oss << "\r\n" << result.second;
 	
-	std::string rsp(std::move(oss.str()));
+	std::string rsp = createResponse(result);
 	send(socket, rsp.c_str(), rsp.size(), 0);
 
-	std::cout << result.first << std::endl;
+	inet_ntop(addr.sin_family, &addr.sin_addr, buf, 128);
+	std::cout << buf << ":" << addr.sin_port << " - ";
+	std::cout << reqlog << result.first << std::endl;
 	close(socket);
 }
 
@@ -69,6 +65,17 @@ request HttpServer::parseRequest(char* req)
 		header[key] = buf + 1;
 	}
 	return {std::move(method), std::move(url), content ? content : "", std::move(header)};
+}
+
+std::string HttpServer::createResponse(const response& res)
+{
+	std::ostringstream oss;
+	oss << "HTTP/1.1 " << res.first << " OK\r\n";
+	oss << "Cache-Control: no-cache, private\r\n";
+	oss << "Content-Type: text/html\r\n";
+	oss << "Content-Length: " << res.second.size() << "\r\n";
+	oss << "\r\n" << res.second;
+	return std::move(oss.str());
 }
 
 void HttpServer::Route(const char* url, handler fp)

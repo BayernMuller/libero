@@ -5,4 +5,4 @@ Debug/
 *.filters
 *.user
 *.o
-main
+*.out

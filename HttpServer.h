@@ -25,6 +25,7 @@ private:
 	std::pair<SOCKET, ADDR> Accept() override;
 	static void onRequest(HttpServer* server, SOCKET socket, ADDR addr);
 	static request parseRequest(char* req);
+	static std::string createResponse(const response& res);
 
 private:
 	std::map<std::string, handler> mHanlders;

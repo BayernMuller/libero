@@ -1,27 +1,27 @@
+#include <string>
 #include <iostream>
 #include "HttpServer.h"
 using namespace std;
-#define add(container, x) container[#x] = x
 
 response index(request req)
 {
+	HtmlRender render;
+
+	string title = "BayernMuller";
+	string comment = "I am a developer";
+	render.Put("title",title);
+	render.Insert(comment);
 	
 	if (req.method == "GET")
 	{
-		return { 200, req.url };
+		return { 200, render("static/index.html") };
 	}
 	return { 400, "Not allowed method" };
-}
-
-response me(request req)
-{
-	return { 200, "<h1>BayernMuller</h1><p><h4>Embedded Software Developer</h4></p>" };
 }
 
 int main() 
 {
 	HttpServer server("0.0.0.0", 8000);
 	server.Route("/", index);
-	server.Route("/me", me);
 	server.Run();
 }

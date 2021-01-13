@@ -7,6 +7,9 @@ TCPServer.o : TCPServer.cpp
 HttpServer.o : HttpServer.cpp
 	g++ -c -o HttpServer.o HttpServer.cpp
 
+HtmlRender.o : HtmlRender.cpp
+	g++ -c -o HtmlRender.o HtmlRender.cpp
+
 main.o :
 	g++ -c -o main.o main.cpp
 

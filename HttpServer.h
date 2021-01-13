@@ -1,6 +1,7 @@
 #ifndef __HTTPSERVER_H__
 #define __HTTPSERVER_H__
 #include "TCPServer.h"
+#include "HtmlRender.h"
 #include <map>
 
 // simple response object for users that saves http state code and data.

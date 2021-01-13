@@ -4,20 +4,40 @@
 #include <string>
 #define Insert(x) Put(#x, x)
 
-class HTMLRender
+class HtmlRender
 {
 public:
 	template<class T>
-	void Put(const char* name, T&& value);
+	void Put(const char* name, T value);
+
+	template<int N>
+	void Put(const char* name, const char(&value)[N]);
+
+	template<>
+	void Put(const char* name, std::string value);
+
+	std::string operator()(const char* html);
 
 private:
 	std::map<std::string, std::string> mValues;
 };
 
 template<class T>
-void HTMLRender::Put(const char* name, T&& value)
+void HtmlRender::Put(const char* name, T value)
 {
-	mValues[name] = std::to_string(value);
+	mValues[name] = std::move(std::to_string(value));
+}
+
+template<int N>
+void HtmlRender::Put(const char* name, const char(&value)[N])
+{
+	mValues[name] = value;
+}
+
+template<>
+void HtmlRender::Put(const char* name, std::string value)
+{
+	mValues[name] = value;
 }
 
 #endif // ! __HTMLRENDER_H__

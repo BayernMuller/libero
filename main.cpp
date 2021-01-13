@@ -1,9 +1,11 @@
 #include <iostream>
 #include "HttpServer.h"
 using namespace std;
+#define add(container, x) container[#x] = x
 
 response index(request req)
 {
+	
 	if (req.method == "GET")
 	{
 		return { 200, req.url };

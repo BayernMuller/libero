@@ -54,6 +54,7 @@ request HttpServer::parseRequest(char* req)
 	std::istringstream iss(req);
 	std::string method, url, protocol, key;
 	std::map<std::string, std::string> header;
+	
 	iss >> method >> url >> protocol;
 	while (iss >> key)
 	{

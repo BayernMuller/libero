@@ -4,10 +4,9 @@ using namespace std;
 
 response index(request req)
 {
-	if (req.method == "POST")
+	if (req.method == "GET")
 	{
-		cout << req.header["Content-Type"] << endl;
-		return { 200, req.content };
+		return { 200, req.url };
 	}
 	return { 400, "Not allowed method" };
 }
@@ -17,7 +16,7 @@ response me(request req)
 	return { 200, "<h1>BayernMuller</h1><p><h4>Embedded Software Developer</h4></p>" };
 }
 
-int main()
+int main() 
 {
 	HttpServer server("0.0.0.0", 8000);
 	server.Route("/", index);

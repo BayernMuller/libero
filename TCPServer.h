@@ -17,7 +17,6 @@ class TCPServer
 {
 public:
 	using ADDR = ::sockaddr_in;
-
 	TCPServer(const char* ip, int port);
 	virtual ~TCPServer();
 	virtual std::pair<SOCKET, ADDR> Accept();

@@ -88,7 +88,6 @@ void HttpServer::Route(const char* url, handler fp)
 
 std::pair<SOCKET, TCPServer::ADDR> HttpServer::Accept()
 {
-	// This function prevents users from using TCPServer::Accept when they call HttpServer's.
 	return TCPServer::Accept();
 }
 

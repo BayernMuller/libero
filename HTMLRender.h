@@ -2,19 +2,15 @@
 #define  __HTMLRENDER_H__
 #include <map>
 #include <string>
+#include <sstream>
 #define Insert(x) Put(#x, x)
 
 class HtmlRender
 {
 public:
 	template<class T>
-	void Put(const char* name, T value);
+	void Put(const char* name, T&& value);
 
-	template<int N>
-	void Put(const char* name, const char(&value)[N]);
-
-	template<>
-	void Put(const char* name, std::string value);
 
 	std::string operator()(const char* html);
 
@@ -23,21 +19,12 @@ private:
 };
 
 template<class T>
-void HtmlRender::Put(const char* name, T value)
+void HtmlRender::Put(const char* name, T&& value)
 {
-	mValues[name] = std::move(std::to_string(value));
+	std::ostringstream oss;
+	oss << value;
+	mValues[name] = std::move(oss.str());
 }
 
-template<int N>
-void HtmlRender::Put(const char* name, const char(&value)[N])
-{
-	mValues[name] = value;
-}
-
-template<>
-void HtmlRender::Put(const char* name, std::string value)
-{
-	mValues[name] = value;
-}
 
 #endif // ! __HTMLRENDER_H__

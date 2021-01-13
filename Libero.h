@@ -1,0 +1,11 @@
+#ifndef __LIBERO_H__
+#define __LIBERO_H__
+
+#include "HttpServer.h"
+#include "HtmlRender.h"
+#define Insert(x) Put(#x, x)
+namespace libero
+{
+	using Libero = typename HttpServer;
+}
+#endif // !__LIBERO_H__

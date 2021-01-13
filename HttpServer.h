@@ -1,53 +1,54 @@
 #ifndef __HTTPSERVER_H__
 #define __HTTPSERVER_H__
 #include "TCPServer.h"
-#include "HtmlRender.h"
 #include <map>
 
-// simple response object for users that saves http state code and data.
-using response = std::pair<int, std::string>;
-
-// structor saves the result that parsed http request.
-struct request
+namespace libero
 {
-	std::string method;
-	std::string url;
-	std::string content;
-	std::map<std::string, std::string> header;
-};
+	// simple response object for users that saves http state code and data.
+	using response = std::pair<int, std::string>;
 
-class HttpServer : public TCPServer
-{
-	// Http Request Handler Type for users
-	using handler = response(*)(request);
-	
-public:
-	// using parent's constructor
-	using TCPServer::TCPServer;
+	// structor saves the result that parsed http request.
+	struct request
+	{
+		std::string method;
+		std::string url;
+		std::string content;
+		std::map<std::string, std::string> header;
+	};
 
-	// The function that begins http server.
-	void Run();
+	class HttpServer : public TCPServer
+	{
+		// Http Request Handler Type for users
+		using handler = response(*)(request);
 
-	// The function that adds url and handlert.
-	void Route(const char* url, handler fp);
+	public:
+		// using parent's constructor
+		using TCPServer::TCPServer;
 
-private:
-	// It is a public function in TCPServer, but private in HttpServer.
-	std::pair<SOCKET, ADDR> Accept() override;
+		// The function that begins http server.
+		void Run();
 
-	// Thread function that handles http request.
-	static void onRequest(HttpServer* server, SOCKET socket, ADDR addr);
+		// The function that adds url and handlert.
+		void Route(const char* url, handler fp);
 
-	// parsing http request protocol.
-	static request parseRequest(char* req);
+	private:
+		// It is a public function in TCPServer, but private in HttpServer.
+		std::pair<SOCKET, ADDR> Accept() override;
 
-	// creating http response protocol with response object.
-	static std::string createResponse(const response& res);
+		// Thread function that handles http request.
+		static void onRequest(HttpServer* server, SOCKET socket, ADDR addr);
 
-private:
-	// saving url and its handlers.
-	std::map<std::string, handler> mHanlders;
-};
+		// parsing http request protocol.
+		static request parseRequest(char* req);
 
+		// creating http response protocol with response object.
+		static std::string createResponse(const response& res);
+
+	private:
+		// saving url and its handlers.
+		std::map<std::string, handler> mHanlders;
+	};
+}
 #endif
 

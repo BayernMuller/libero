@@ -13,21 +13,23 @@
 using SOCKET = unsigned int;
 #endif
 
-class TCPServer
+namespace libero
 {
-public:
-	using ADDR = ::sockaddr_in;
-	TCPServer(const char* ip, int port);
-	virtual ~TCPServer();
-	virtual std::pair<SOCKET, ADDR> Accept();
-	
-protected:
-	static void close(SOCKET sock);
+	class TCPServer
+	{
+	public:
+		using ADDR = ::sockaddr_in;
+		TCPServer(const char* ip, int port);
+		virtual ~TCPServer();
+		virtual std::pair<SOCKET, ADDR> Accept();
 
-private:
-	SOCKET mServerSock;
-	std::string mIPAdress;
-	int mPort;
-};
+	protected:
+		static void close(SOCKET sock);
 
+	private:
+		SOCKET mServerSock;
+		std::string mIPAdress;
+		int mPort;
+	};
+}
 #endif

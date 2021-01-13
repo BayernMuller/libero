@@ -1,7 +1,8 @@
 #include <string>
 #include <iostream>
-#include "HttpServer.h"
+#include "Libero.h"
 using namespace std;
+using namespace libero;
 
 response index(request req)
 {
@@ -25,7 +26,7 @@ response button(request req)
 
 int main() 
 {
-	HttpServer server("0.0.0.0", 8000);
+	Libero server("0.0.0.0", 8000);
 	server.Route("/", index);
 	server.Route("/button", button);
 	server.Run();

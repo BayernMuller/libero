@@ -6,6 +6,6 @@
 #define Insert(x) Put(#x, x)
 namespace libero
 {
-	using Libero = typename HttpServer;
+	using Libero = HttpServer;
 }
 #endif // !__LIBERO_H__

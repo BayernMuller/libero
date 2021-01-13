@@ -1,5 +1,5 @@
 main.out : HttpServer.o TCPServer.o main.o
-	g++ -o main.out main.o TCPServer.o HttpServer.o -lpthread -std=c++11
+	g++ -o main.out main.o TCPServer.o HttpServer.o -lpthread -std=c++14
 
 TCPServer.o : TCPServer.cpp
 	g++ -c -o TCPServer.o TCPServer.cpp

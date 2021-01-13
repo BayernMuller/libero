@@ -21,10 +21,9 @@ namespace libero
 	template<class T>
 	void HtmlRender::Put(const char* name, T&& value)
 	{
-		static std::ostringstream oss;
+		std::ostringstream oss;
 		oss << value;
 		mValues[name] = std::move(oss.str());
-		oss.clear();
 	}
 }
 

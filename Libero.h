@@ -2,7 +2,7 @@
 #define __LIBERO_H__
 
 #include "HttpServer.h"
-#include "HtmlRender.h"
+#include "HTMLRender.h"
 #define Insert(x) Put(#x, x)
 namespace libero
 {

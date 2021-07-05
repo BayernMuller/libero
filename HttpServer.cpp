@@ -9,7 +9,10 @@ namespace libero
 {
 	void HttpServer::Run()
 	{
-		std::cout << "HttpServer is running..." << std::endl;
+		std::cout << "Libero is running on ..." << std::endl;
+		std::cout << " - http://" << mIPAdress << ":" << mPort << std::endl;
+		std::cout << " - Made by BayernMuller" << std::endl;
+	
 		while (true)
 		{
 			auto client = Accept();

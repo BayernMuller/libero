@@ -26,10 +26,12 @@ namespace libero
 	protected:
 		static void close(SOCKET sock);
 
-	private:
-		SOCKET mServerSock;
+	protected:
 		std::string mIPAdress;
 		int mPort;
+
+	private:
+		SOCKET mServerSock;
 	};
 }
 #endif

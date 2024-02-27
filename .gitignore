@@ -7,3 +7,5 @@ Debug/
 *.o
 *.out
 build/
+app
+.vscode/

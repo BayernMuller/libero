@@ -11,7 +11,7 @@ LIBERO_OBJECTS := $(patsubst $(LIBERO_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(LIBERO_SOU
 CXXFLAGS := -std=c++11 -Wall -Wextra -I$(SOURCE_DIR) -I$(LIBERO_DIR)
 LDFLAGS := 
 
-EXECUTABLE := $(BUILD_DIR)/main
+EXECUTABLE := app
 
 all: $(EXECUTABLE)
 
@@ -27,6 +27,6 @@ $(BUILD_DIR)/%.o: $(LIBERO_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 clean:
-	rm -rf $(BUILD_DIR)
+	rm -rf $(BUILD_DIR) $(EXECUTABLE)
 
 .PHONY: all clean

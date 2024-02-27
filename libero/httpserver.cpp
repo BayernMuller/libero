@@ -1,4 +1,4 @@
-#include "HttpServer.h"
+#include "httpserver.h"
 #include <thread>
 #include <sstream>
 #include <vector>
@@ -11,7 +11,7 @@ namespace libero
 	{
 		std::cout << "Libero is running on ..." << std::endl;
 		std::cout << " - http://" << mIPAdress << ":" << mPort << std::endl;
-		std::cout << " - Made by BayernMuller" << std::endl;
+		std::cout << " - Made by BayernMuller (https://github.com/BayernMuller)" << std::endl;
 	
 		while (true)
 		{

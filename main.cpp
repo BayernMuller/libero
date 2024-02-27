@@ -1,6 +1,6 @@
 #include <string>
 #include <iostream>
-#include "Libero.h"
+#include "libero.h"
 using namespace std;
 using namespace libero;
 

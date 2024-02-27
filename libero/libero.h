@@ -1,8 +1,8 @@
 #ifndef __LIBERO_H__
 #define __LIBERO_H__
 
-#include "HttpServer.h"
-#include "HTMLRender.h"
+#include "httpserver.h"
+#include "htmlrender.h"
 #define Insert(x) Put(#x, x)
 namespace libero
 {

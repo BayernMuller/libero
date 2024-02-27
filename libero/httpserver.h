@@ -1,6 +1,6 @@
 #ifndef __HTTPSERVER_H__
 #define __HTTPSERVER_H__
-#include "TCPServer.h"
+#include "tcpserver.h"
 #include <map>
 
 namespace libero

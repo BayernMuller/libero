@@ -1,17 +1,32 @@
-main.out : HttpServer.o TCPServer.o main.o
-	g++ -o main.out main.o TCPServer.o HttpServer.o -lpthread -std=c++14
+CXX := g++
+BUILD_DIR := build
+SOURCE_DIR := .
+LIBERO_DIR := libero
 
-TCPServer.o : TCPServer.cpp
-	g++ -c -o TCPServer.o TCPServer.cpp -std=c++14
+SOURCES := $(wildcard $(SOURCE_DIR)/*.cpp)
+LIBERO_SOURCES := $(wildcard $(LIBERO_DIR)/*.cpp)
+OBJECTS := $(patsubst $(SOURCE_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(SOURCES))
+LIBERO_OBJECTS := $(patsubst $(LIBERO_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(LIBERO_SOURCES))
 
-HttpServer.o : HttpServer.cpp
-	g++ -c -o HttpServer.o HttpServer.cpp -std=c++14
+CXXFLAGS := -std=c++11 -Wall -Wextra -I$(SOURCE_DIR) -I$(LIBERO_DIR)
+LDFLAGS := 
 
-HtmlRender.o : HtmlRender.cpp
-	g++ -c -o HtmlRender.o HtmlRender.cpp -std=c++14
+EXECUTABLE := $(BUILD_DIR)/main
 
-main.o :
-	g++ -c -o main.o main.cpp -std=c++14
+all: $(EXECUTABLE)
 
-clean :
-	rm *.o *.out
+$(EXECUTABLE): $(OBJECTS) $(LIBERO_OBJECTS)
+	$(CXX) $(LDFLAGS) $^ -o $@
+
+$(BUILD_DIR)/%.o: $(SOURCE_DIR)/%.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+$(BUILD_DIR)/%.o: $(LIBERO_DIR)/%.cpp
+	@mkdir -p $(@D)
+	$(CXX) $(CXXFLAGS) -c $< -o $@
+
+clean:
+	rm -rf $(BUILD_DIR)
+
+.PHONY: all clean

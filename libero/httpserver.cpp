@@ -80,7 +80,7 @@ namespace libero
 		oss << "Content-Type: text/html\r\n";
 		oss << "Content-Length: " << res.second.size() << "\r\n";
 		oss << "\r\n" << res.second;
-		return std::move(oss.str());
+		return oss.str();
 	}
 
 	void HttpServer::Route(const char* url, handler fp)

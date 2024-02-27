@@ -25,7 +25,7 @@ namespace libero
 	{
 		std::ostringstream oss;
 		oss << value;
-		mValues[name] = std::move(oss.str());
+		mValues[name] = oss.str();
 	}
 
 	template<int N>

@@ -45,6 +45,9 @@ namespace libero
 		// creating http response protocol with response object.
 		static std::string createResponse(const response& res);
 
+		// print logo
+		static void printLogo();
+
 	private:
 		// saving url and its handlers.
 		std::map<std::string, handler> mHanlders;

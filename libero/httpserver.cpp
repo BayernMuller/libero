@@ -9,9 +9,9 @@ namespace libero
 {
 	void HttpServer::Run()
 	{
-		std::cout << "Libero is running on ..." << std::endl;
+		printLogo();
+		std::cout << "libero is running on ..." << std::endl;
 		std::cout << " - http://" << mIPAdress << ":" << mPort << std::endl;
-		std::cout << " - Made by BayernMuller (https://github.com/BayernMuller)" << std::endl;
 	
 		while (true)
 		{
@@ -96,4 +96,17 @@ namespace libero
 	{
 		return TCPServer::Accept();
 	}
-}
+
+	void HttpServer::printLogo()
+	{
+		std::cout << R"(
+            __ _  __                     
+           / /(_)/ /_   ___   _____ ____ 
+          / // // __ \ / _ \ / ___// __ \
+         / // // /_/ //  __// /   / /_/ /
+        /_//_//_.___/ \___//_/    \____/  
+
+    [https://github.com/bayernmuller/libero]
+		)" << std::endl << std::endl;
+	}
+} // namespace libero

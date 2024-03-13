@@ -27,32 +27,40 @@ This project is structured to separate core functionalities such as TCP connecti
 
 ### Getting Started
 
-To get started with libero, simply clone the repository and build the project using `make`. The server can be run using the following command:
+To get started with libero, simply clone the repository and build the project using `cmake`.
 
 ```bash
 git clone https://github.com/bayernmuller/libero.git
 cd libero
+mkdir build && cd build
+cmake ..
 make
-./app
 ```
 
-HTTP Server will be running on `localhost:8500` by default. You can change the port by modifying the parameter in `main.cpp`, `main()`.
+And install the framework on your system.
 
-```text
-$ ./app
-
-            __ _  __                     
-           / /(_)/ /_   ___   _____ ____ 
-          / // // __ \ / _ \ / ___// __ \
-         / // // /_/ //  __// /   / /_/ /
-        /_//_//_.___/ \___//_/    \____/  
-
-    [https://github.com/bayernmuller/libero]
-
-
-libero is running on ...
- - http://0.0.0.0:8500
+```bash
+sudo make install
 ```
+
+Now you can use `libero` in your C++ projects by including the header file and linking the library.
+
+```bash
+g++ -std=c++11 -o your_project your_project.cpp -llibero
+```
+
+### Examples
+
+After the installation, You can check out the `examples` directory for sample applications built using libero. The `hello_world` example demonstrates a simple HTML server, while the `dynamic_content` example shows how to render dynamic content using the server.
+
+Build the `hello_world` example using the following commands:
+
+```bash
+cd examples
+./build-examples.sh
+./hello_world.out
+```
+
 
 ### Features
 

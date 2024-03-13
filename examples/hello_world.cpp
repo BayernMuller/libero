@@ -3,7 +3,7 @@ using namespace libero;
 
 response index(request req)
 {
-	return { 200, HtmlRender()("static/hello_world.html") };
+	return { 200, HtmlRender("static/hello_world.html") };
 }
 
 int main() 

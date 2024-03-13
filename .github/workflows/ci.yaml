@@ -1,0 +1,32 @@
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+  build_and_install:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+      with:
+        repository: 'bayernmuller/libero'
+    
+    - name: Install dependencies
+      run: sudo apt-get update && sudo apt-get install -y cmake g++
+
+    - name: Build libero
+      run: |
+        mkdir build && cd build
+        cmake ..
+        make
+
+    - name: Install libero
+      run: |
+        cd build
+        sudo make install
+    
+    - name: Build examples
+      run: |
+        cd examples
+        ./build-examples.sh
+

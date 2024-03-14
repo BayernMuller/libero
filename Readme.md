@@ -51,15 +51,25 @@ g++ -std=c++11 -o your_project your_project.cpp -llibero
 
 ### Examples
 
-After the installation, You can check out the `examples` directory for sample applications built using libero. The `hello_world` example demonstrates a simple HTML server, while the `dynamic_content` example shows how to render dynamic content using the server.
+After the installation, You can check out the `examples` directory for sample applications built using libero. The `hello_world` example demonstrates a simple HTML server, while the `introduction` example showcases the use of dynamic content rendering.
 
-Build the `hello_world` example using the following commands:
+Build the `examples` using the following commands:
 
 ```bash
 cd examples
 ./build-examples.sh
-./hello_world.out
 ```
+
+And run the `introduction` example to see libero in action.
+
+```bash
+./introduction.out &
+open http://localhost:8500
+```
+
+<p align="center">
+    <img src="docs/demo.png"/>
+</p>
 
 
 ### Features
